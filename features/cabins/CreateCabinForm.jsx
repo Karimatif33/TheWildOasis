@@ -14,6 +14,7 @@ function CreateCabinForm() {
   const { register, handleSubmit, reset, getValues, formState } = useForm();
   const { errors } = formState;
   const queryClient = useQueryClient();
+
   const { mutate, isLoading: isCreating } = useMutation({
     mutationFn: createCabin,
     onSuccess: () => {
@@ -101,8 +102,8 @@ function CreateCabinForm() {
         />
       </FormRow>
 
-      <FormRow label="Cabin photo" error={errors?.image?.message}>
-        <FileInput id="image" accept="image/*" disabled={isCreating} />
+      <FormRow label="Cabin photo">
+        <FileInput id="image" accept="image/*"{...register("image",{required:'this field is required'}) } />
       </FormRow>
 
       <FormRow>
