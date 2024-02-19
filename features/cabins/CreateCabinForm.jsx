@@ -1,4 +1,3 @@
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 
@@ -8,7 +7,8 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import { createEditCabin } from "../../src/services/apiCabins";
+import { useCreateCabin } from "./useCreateCabin";
+import { useEditCabin } from "./useEditCabin";
 
 function CreateCabinForm({ cabinToEdit = {} }) {
   const { id: editId, ...editValues } = cabinToEdit;
@@ -17,31 +17,8 @@ function CreateCabinForm({ cabinToEdit = {} }) {
     defaultValues: isEditSession ? editValues : {},
   });
   const { errors } = formState;
-  const queryClient = useQueryClient();
-
-  const { mutate: createCabin, isLoading: isCreating } = useMutation({
-    mutationFn: createEditCabin,
-    onSuccess: () => {
-      toast.success("New cabin successfly created");
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
-      reset();
-    },
-    onError: (err) => toast.error(err.message),
-  });
-  const { mutate: editCabin, isLoading: isEditing } = useMutation({
-    mutationFn: ({ newCabinData, id }) => createEditCabin(newCabinData, id),
-    onSuccess: () => {
-      toast.success("Cabin successfly edited");
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
-      reset();
-    },
-    onError: (err) => toast.error(err.message),
-  });
-
+  const { isCreating, createCabin } = useCreateCabin();
+  const {editCabin, isEditing} = useEditCabin()
   const isWorking = isCreating || isEditing;
 
   const onSubmit = async (data) => {
@@ -49,8 +26,23 @@ function CreateCabinForm({ cabinToEdit = {} }) {
     try {
       // console.log(data);
       if (isEditSession)
-        editCabin({ newCabinData: { ...data, image }, id: editId });
-      else await createCabin({ ...data, image: image });
+        editCabin(
+          { newCabinData: { ...data, image }, id: editId },
+          {
+            onSuccess: (data) => {
+              reset();
+            },
+          }
+        );
+      else
+        await createCabin(
+          { ...data, image: image },
+          {
+            onSuccess: (data) => {
+              reset();
+            },
+          }
+        );
     } catch (error) {
       console.error("Error creating cabin:", error);
       toast.error("An error occurred while creating the cabin");
