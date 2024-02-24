@@ -5,6 +5,11 @@ const Row = styled.div`
   ${(props) => props.type === "horizontal" && css`
     justify-content: space-between;
     align-items: center;
+    @media (max-width: 768px) {
+      display: block;
+
+      }
+
   `}
   ${(props) => props.type === "vertical" && css`
 

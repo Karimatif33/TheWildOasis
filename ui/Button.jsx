@@ -21,6 +21,17 @@ const sizes = {
 };
 
 const variations = {
+  primaryMob: css`
+  color: var(--color-brand-50);
+  background-color: var(--color-brand-600);
+  @media (max-width: 768px) {
+      width: 100%;
+
+    }
+  &:hover {
+    background-color: var(--color-brand-700);
+  }
+`,
   primary: css`
     color: var(--color-brand-50);
     background-color: var(--color-brand-600);
@@ -29,6 +40,7 @@ const variations = {
       background-color: var(--color-brand-700);
     }
   `,
+
   secondary: css`
     color: var(--color-grey-600);
     background: var(--color-grey-0);

@@ -5,6 +5,12 @@ const StyeldFormRow = styled.div`
   align-items: center;
   grid-template-columns: 24rem 1fr 1.2fr;
   gap: 2.4rem;
+  @media (max-width: 768px) {
+  display: block;
+
+    gap: 0rem;
+
+      }
 
   padding: 1.2rem 0;
 
@@ -24,6 +30,10 @@ const StyeldFormRow = styled.div`
     display: flex;
     justify-content: flex-end;
     gap: 1.2rem;
+    @media (max-width: 768px) {
+        display:block;
+
+      }
   }
 `;
 

@@ -1,10 +1,4 @@
-import {
-  cloneElement,
-  createContext,
-  useContext,
-
-  useState,
-} from "react";
+import { cloneElement, createContext, useContext, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
@@ -20,6 +14,9 @@ const StyledModal = styled.div`
   box-shadow: var(--shadow-lg);
   padding: 3.2rem 4rem;
   transition: all 0.5s;
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const Overlay = styled.div`
@@ -77,8 +74,8 @@ function Open({ children, opens: opensWindowName }) {
 
 function Window({ children, name }) {
   const { openName, close } = useContext(ModalContext);
-const ref = useOutsideClick(close)
-  
+  const ref = useOutsideClick(close);
+
   if (name !== openName) return null;
 
   return createPortal(
